@@ -8,6 +8,9 @@ const theme = createMuiTheme({
           WebkitFontSmoothing: 'auto',
           minHeight: '100vh',
           scrollBehavior: 'smooth'
+        },
+        body: {
+          minHeight: '100vh'
         }
       }
     },
