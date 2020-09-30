@@ -21,11 +21,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import EmployeeForm from '../molecules/EmployeeForm'
 import { createAPI, setFormErrorState } from '../../store/reducers/_employee'
 
-const Transition = React.forwardRef(function Transition(props, ref) {
+const Transition = React.forwardRef(function Transition (props, ref) {
   return <Slide direction='up' ref={ref} {...props} />
 })
 
-const TransitionDefault = React.forwardRef(function Transition(props, ref) {
+const TransitionDefault = React.forwardRef(function Transition (props, ref) {
   return <Fade direction='up' ref={ref} {...props} />
 })
 

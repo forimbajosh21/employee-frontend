@@ -11,11 +11,11 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { useDispatch, useSelector } from 'react-redux'
 import { setNotificationList } from '../../store/reducers/_notification'
 
-function GrowTransition(props) {
+function GrowTransition (props) {
   return <Grow {...props} />
 }
 
-function SlideTransition(props) {
+function SlideTransition (props) {
   return <Slide {...props} direction='up' />
 }
 
