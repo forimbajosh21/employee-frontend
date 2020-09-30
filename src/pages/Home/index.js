@@ -1,29 +1,33 @@
 import React from 'react'
 import Container from '@material-ui/core/Container'
+import Toolbar from '@material-ui/core/Toolbar'
 
 // redux
 import { useDispatch, useSelector } from 'react-redux'
-import { toggleModal } from '../../store/reducers/_employee'
+import { toggleCreateModal } from '../../store/reducers/_employee'
 
 // components
 import Appbar from '../../components/organisms/Appbar'
 import Topbar from '../../components/organisms/Topbar'
-import CreateModal from '../../components/organisms/CreateModal'
+import CreateEmployeeModal from '../../components/organisms/CreateEmployeeModal'
+import EmployeeList from '../../components/organisms/EmployeeList'
 
 const Home = () => {
   const dispatch = useDispatch()
-  const { modal: { open } } = useSelector(state => state.employee)
+  const { modal: { createOpen } } = useSelector(state => state.employee)
 
-  const toggleCreateModal = () => {
-    dispatch(toggleModal())
+  const toggleCreate = () => {
+    dispatch(toggleCreateModal())
   }
   return (
     <>
       <Appbar />
       <Container>
-        <Topbar addFunc={toggleCreateModal} />
+        <Topbar addFunc={toggleCreate} />
+        <Toolbar />
+        <EmployeeList />
       </Container>
-      <CreateModal open={open} closeFunc={toggleCreateModal} />
+      <CreateEmployeeModal open={createOpen} closeFunc={toggleCreate} />
     </>
   )
 }

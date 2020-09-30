@@ -16,6 +16,9 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 // pages
 import Home from './pages/Home'
 
+// components
+import Notification from './components/atoms/Notification'
+
 const App = () => {
   return (
     <Provider store={store}>
@@ -23,6 +26,7 @@ const App = () => {
         <MuiPickersUtilsProvider utils={MomentUtils}>
           <CssBaseline />
           <Home />
+          <Notification />
         </MuiPickersUtilsProvider>
       </ThemeProvider>
     </Provider>

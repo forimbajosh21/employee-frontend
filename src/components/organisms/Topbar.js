@@ -13,7 +13,7 @@ const Topbar = ({ addFunc }) => {
       <Box display='inline-block' flexGrow={1}>
         <Button disableElevation variant='contained' color='primary' onClick={addFunc}>Add New Employee</Button>
       </Box>
-      <Box>
+      {/* <Box>
         <ButtonGroup disableElevation color='primary' aria-label='outlined primary button group'>
           <Button>
             <AppsRoundedIcon />
@@ -22,7 +22,7 @@ const Topbar = ({ addFunc }) => {
             <ListRoundedIcon />
           </Button>
         </ButtonGroup>
-      </Box>
+      </Box> */}
     </Toolbar>
   )
 }
