@@ -37,6 +37,13 @@ const slice = createSlice({
         key: new Date().getTime()
       }
       state.lists = [...state.lists, data]
+    },
+    'employee/updateAPI/fulfilled': (state) => {
+      const data = {
+        message: 'Employee updated successfully',
+        key: new Date().getTime()
+      }
+      state.lists = [...state.lists, data]
     }
   }
 })

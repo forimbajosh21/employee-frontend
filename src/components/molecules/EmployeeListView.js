@@ -1,11 +1,10 @@
 import React from 'react'
-import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
 // redux
 import { useDispatch } from 'react-redux'
-import { setFormState, deleteAPI } from '../../store/reducers/_employee'
+import { setFormState, deleteAPI, toggleUpdateModal } from '../../store/reducers/_employee'
 
 // components
 import EmployeeCard from '../atoms/EmployeeCard'
@@ -19,9 +18,21 @@ const EmployeeListView = ({ loading, lists }) => {
   const dispatch = useDispatch()
   const [openConfirm, setopenConfirm] = React.useState(false)
 
-  const editFunc = () => { }
+  const editFunc = (data) => {
+    const transformed = {
+      _id: data._id,
+      firstname: data.first_name,
+      lastname: data.last_name,
+      birthdate: data.birthdate,
+      address: data.address,
+      status: data.status,
+      team: data.team
+    }
+    dispatch(setFormState({ current: 'form', data: transformed }))
+    dispatch(toggleUpdateModal())
+  }
+
   const deleteFunc = (id) => {
-    console.log(id)
     dispatch(setFormState({ current: '_id', data: id }))
     setopenConfirm(true)
   }
@@ -38,8 +49,8 @@ const EmployeeListView = ({ loading, lists }) => {
     <>
       <Grid container spacing={2}>
         {lists.map((li, index) => (
-          <Grid item xs={12} sm={4} md={3} key={index} className={classes.cardContainer}>
-            <EmployeeCard firstname={li.first_name} lastname={li.last_name} status={li.status} team={li.team} address={li.address} birthdate={li.birthdate} editFunc={editFunc} deleteFunc={() => deleteFunc(li._id)} />
+          <Grid item xs={12} sm={6} md={4} lg={3} key={index} className={classes.cardContainer}>
+            <EmployeeCard firstname={li.first_name} lastname={li.last_name} status={li.status} team={li.team} address={li.address} birthdate={li.birthdate} editFunc={() => editFunc(li)} deleteFunc={() => deleteFunc(li._id)} />
           </Grid>
         ))}
       </Grid>

@@ -14,12 +14,14 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import CloseIcon from '@material-ui/icons/Close'
 
+import { motion, AnimatePresence } from 'framer-motion'
+
 // redux
 import { useDispatch, useSelector } from 'react-redux'
 
 // components
 import EmployeeForm from '../molecules/EmployeeForm'
-import { createAPI, setFormErrorState } from '../../store/reducers/_employee'
+import { updateAPI, setFormErrorState } from '../../store/reducers/_employee'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='up' ref={ref} {...props} />
@@ -29,11 +31,31 @@ const TransitionDefault = React.forwardRef(function Transition(props, ref) {
   return <Fade direction='up' ref={ref} {...props} />
 })
 
-const CreateEmployeeModal = ({ open, closeFunc }) => {
+const UpdateEmployeeModal = ({ open, closeFunc }) => {
   const theme = useTheme()
   const xsDown = useMediaQuery(theme.breakpoints.down('xs'))
   const dispatch = useDispatch()
-  const { form: { loading, firstname, lastname, birthdate, status, team } } = useSelector(state => state.employee)
+  const { lists, form: { loading, _id, firstname, lastname, birthdate, address, status, team } } = useSelector(state => state.employee)
+  const [hasChanged, setHasChanged] = React.useState(false)
+
+  React.useEffect(() => {
+    const listOfEmployee = lists
+    const original = listOfEmployee.filter(li => { return li._id === _id })
+    if (original.length > 0) {
+      if (
+        original[0].first_name !== firstname ||
+        original[0].last_name !== lastname ||
+        original[0].birthdate !== birthdate ||
+        original[0].address !== address ||
+        original[0].status !== status ||
+        original[0].team !== team
+      ) {
+        setHasChanged(true)
+      } else {
+        setHasChanged(false)
+      }
+    }
+  }, [open, lists, _id, firstname, lastname, birthdate, address, status, team])
 
   const validFormData = () => {
     if (!firstname || !lastname || !birthdate || !status || !team) {
@@ -54,7 +76,7 @@ const CreateEmployeeModal = ({ open, closeFunc }) => {
 
   const createFunc = () => {
     if (validFormData()) {
-      dispatch(createAPI())
+      dispatch(updateAPI())
     }
   }
 
@@ -69,21 +91,26 @@ const CreateEmployeeModal = ({ open, closeFunc }) => {
         </IconButton>
       </Box>
       <DialogTitle>
-        Create Employee
+        Employee
       </DialogTitle>
       <DialogContent>
         <EmployeeForm />
       </DialogContent>
       <DialogActions>
-        <Button disableElevation fullWidth={xsDown} color='secondary' variant={xsDown ? 'contained' : 'text'} onClick={closeFunc} disabled={loading}>
-          Cancel
-        </Button>
-        <Button disableElevation fullWidth={xsDown} color='primary' variant={xsDown ? 'contained' : 'text'} onClick={createFunc} disabled={loading}>
-          {loading ? <CircularProgress size={23} /> : 'Create'}
-        </Button>
+        <Box minHeight={36} width='100%'>
+          <AnimatePresence>
+            {hasChanged && (
+              <motion.div initial={{ y: -15, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -15, opacity: 0 }} transition={{ ease: 'easeInOut' }} style={{ width: '100%', textAlign: 'right' }}>
+                <Button disableElevation fullWidth={xsDown} color='primary' variant={xsDown ? 'contained' : 'text'} onClick={createFunc} disabled={loading}>
+                  {loading ? <CircularProgress size={23} /> : 'Update'}
+                </Button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </Box>
       </DialogActions>
     </Dialog>
   )
 }
 
-export default CreateEmployeeModal
+export default UpdateEmployeeModal

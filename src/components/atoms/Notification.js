@@ -11,11 +11,11 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { useDispatch, useSelector } from 'react-redux'
 import { setNotificationList } from '../../store/reducers/_notification'
 
-function GrowTransition (props) {
+function GrowTransition(props) {
   return <Grow {...props} />
 }
 
-function SlideTransition (props) {
+function SlideTransition(props) {
   return <Slide {...props} direction='up' />
 }
 
@@ -23,8 +23,7 @@ const useStyles = makeStyles((theme) => ({
   snackbar: {
     maxWidth: 500,
     [theme.breakpoints.down('xs')]: {
-      maxWidth: 'auto',
-      bottom: 90
+      maxWidth: 'auto'
     }
   }
 }))
@@ -34,6 +33,7 @@ const Notification = () => {
   const xsDown = useMediaQuery(theme.breakpoints.down('xs'))
   const classes = useStyles()
   const dispatch = useDispatch()
+  const { modal: { createOpen, updateOpen } } = useSelector(state => state.employee)
   const { lists } = useSelector(state => state.notification)
   const [open, setOpen] = React.useState(false)
   const [messageInfo, setMessageInfo] = React.useState(undefined)
@@ -64,6 +64,7 @@ const Notification = () => {
   // change anchor and transition depending on the screen size
   const anchor = xsDown ? { vertical: 'bottom', horizontal: 'center' } : { vertical: 'top', horizontal: 'right' }
   const transition = xsDown ? SlideTransition : GrowTransition
+  const bottom = xsDown ? (createOpen || updateOpen) ? 8 : 90 : 'auto'
 
   return (
     <Snackbar
@@ -80,6 +81,7 @@ const Notification = () => {
       className={classes.snackbar}
       anchorOrigin={anchor}
       TransitionComponent={transition}
+      style={{ bottom: bottom }}
     />
   )
 }
